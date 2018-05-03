@@ -1,8 +1,11 @@
-var provider = new Web3.providers.HttpProvider("https://rinkeby.infura.io/sF8QaFr5COSzwukN3V2Y");
+var provider = new Web3.providers.HttpProvider("https://rinkeby.infura.io/sF8QaFr5COSzwukN3V2Y")
 
-var web3 = new Web3(provider);
+var web3 = new Web3(provider)
+
+var ETHERSCANBASE="https://rinkeby.etherscan.io/address/"
 
 console.log(web3.version)
+let priv = "0xd63264601ef2d420fe05decf1e3f7756b2826d69c33d16b7dd1fb5b0d79fe91d"  
 
 var wallet = {
    account: null,
@@ -22,7 +25,6 @@ var wallet = {
    withdraw: function (dest, value) {
       dest = dest || window.prompt("Send to:")
       value = value || 1e18
-      // send web3
 
       let transaction = web3.eth.sendTransaction({
          from: this.account.address,
@@ -44,14 +46,13 @@ function updateBalance( newBalance ) {
 }
 
 async function setup() {
-  let priv = "0xd63264601ef2d420fe05decf1e3f7756b2826d69c33d16b7dd1fb5b0d79fe91d"  
-
   wallet.init(priv)
 
   $ = (selector) => document.querySelector(selector)
 
   $('.address').innerText = wallet.account.address
-  $('.address').onclick = () => wallet.deposit()
+//  $('.address').onclick = () => wallet.deposit()
+  $('.link-address').href = ETHERSCANBASE + wallet.account.address
 
   balance = await wallet.getBalance()
   updateBalance( balance )
