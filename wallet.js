@@ -4,9 +4,35 @@ var web3 = new Web3(provider)
 var wallet = {
    account: null,
    balance: null,
+   tokens: [],
    init: function (priv) {
+      if (!priv) throw new Error('no priv key');
       this.account = web3.eth.accounts.wallet.add(priv)
       this.getBalance()
+   },
+   addToken: async function (tokenAddress) {
+     if ( !tokenAddress ) throw new Error('no contract address')
+     if ( !this.account ) throw new Error('no init wallet')
+
+     let contract = new web3.eth.Contract(erc20interface, tokenAddress, {
+       from: this.account.address,
+       gas: 100000,
+       gasPrice: '20000000000'
+     })
+
+     let token = { contract }
+     let getBalance = () => token.contract.methods.balanceOf( this.account.address ).call()
+
+     token.name = await token.contract.methods.name().call()
+
+     token.getBalance = getBalance
+     token.balance = await getBalance()
+
+     token.send = (to, value) => token.contract.methods.transfer(to, value).send()
+
+     this.tokens.push(token)
+
+     return token
    },
    getBalance: function () {
       let req = web3.eth.getBalance(this.account.address)
@@ -17,8 +43,6 @@ var wallet = {
       alert(this.account.address)
    },
    withdraw: function (dest, value) {
-      dest = dest || window.prompt("Send to:")
-      value = value || 1e18
 
       let transaction = web3.eth.sendTransaction({
          from: this.account.address,
@@ -34,4 +58,3 @@ var wallet = {
       }
    }
 }
-
