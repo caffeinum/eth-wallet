@@ -2,6 +2,7 @@
 <html>
 <head>
 <script src="web3.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
 <script src="wallet.js"></script>
 <script src="script.js"></script>
 <style type="text/css">
@@ -16,7 +17,7 @@
 <h1>Your address is:</h1>
 
 <a href="#" class="link-address" target="_blank">
-  <span class="address">&nbsp;</span>
+  <span class="address" id="address">&nbsp;</span>
 </a>
 
 <br />
@@ -26,7 +27,7 @@ Balance: <span class="balance">...</span>
 </span>
 
 <br />
-<a href="#" class="link-deposit">Deposit</a>
+<a href="#" class="link-deposit cb-element" data-clipboard-target="#address">Deposit</a>
 <a href="#" class="link-withdraw">Withdraw</a>
 
 </body>

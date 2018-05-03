@@ -7,6 +7,7 @@ function updateBalance( newBalance ) {
 
 async function setup() {
   wallet.init(priv)
+  new ClipboardJS('.cb-element');
 
   $ = (selector) => document.querySelector(selector)
 
@@ -17,7 +18,7 @@ async function setup() {
   balance = await wallet.getBalance()
   updateBalance( balance )
 
-  $('.link-deposit').onclick = () => wallet.deposit()
+  $('.link-deposit').onclick = () => alert("Address copied: \n" + wallet.account.address)
   $('.link-withdraw').onclick = () => wallet.withdraw() 
 }
 
